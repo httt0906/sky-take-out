@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * 员工管理
  */
-@RestController
+@RestController // = @Controller + @ResponseBody(将方法的返回值直接写入 HTTP 响应体中)
 @RequestMapping("/admin/employee")
 @Slf4j
 @Api(tags = "员工相关接口")
