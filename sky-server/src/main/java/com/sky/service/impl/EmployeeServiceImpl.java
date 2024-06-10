@@ -81,13 +81,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.DISABLE);
         // 设置密码 默认密码 123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        // 设置当前记录的创建和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        // 设置当前记录创建人和修改人的id
-        // 后续要设置为当前登录用户的id 已完成
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        // 这些字段无需设置 这是因为使用AOP方法 实现公共字段的统一填充
+//        // 设置当前记录的创建和修改时间
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        // 设置当前记录创建人和修改人的id
+//        // 后续要设置为当前登录用户的id 已完成
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
 
@@ -149,9 +150,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
-
-        employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(LocalDateTime.now());
+        // 这些字段无需设置 这是因为使用AOP方法 实现公共字段的统一填充
+//        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         employeeMapper.update(employee);
     }
