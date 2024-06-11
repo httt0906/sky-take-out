@@ -13,8 +13,15 @@
                 #{updateTime}, #{createUser}, #{updateUser}, #{status})
     </insert>
 
+    <delete id="deleteByIds">
+        delete from sky_take_out.dish where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
-# 必须要字段名(数据库里的表头)和属性名(VO类)对应 所以通过起别名解决
+        # 必须要字段名(数据库里的表头)和属性名(VO类)对应 所以通过起别名解决
         select d.* , c.name as categoryName from dish d left outer join category c on d.category_id = c.id
         <where>
             <if test="name != null">
