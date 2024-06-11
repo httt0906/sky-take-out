@@ -6,6 +6,7 @@ import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,22 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+
+
+    /**
+     * 根据id查找菜品
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据菜品id查找相应菜品")
+    public Result<DishVO> getById(@PathVariable Long id){
+        log.info("根据id:{} 查找菜品",id);
+        DishVO dishVO = dishService.getByIdWithFlavor(id);
+        return Result.success(dishVO);
+    }
+
+
 
     /**
      * 新增菜品
@@ -66,6 +83,20 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) { // @RequestParam 注解用于将请求参数绑定到方法参数上
         log.info("批量删除菜品:{}",ids);
         dishService.deleteBatch(ids);
+        return Result.success();
+    }
+
+
+    /**
+     * 修改菜品信息
+     * @param dishDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改菜品信息")
+    public Result update(@RequestBody DishDTO dishDTO){
+        log.info("修改菜品信息:{}",dishDTO);
+        dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 
