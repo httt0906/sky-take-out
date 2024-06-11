@@ -5,4 +5,4 @@
 *Test.java
 **/test/
 # aliOss密钥
-application-dev.yml
+sky-server\src\main\resources\application-dev.yml
