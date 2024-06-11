@@ -7,7 +7,9 @@ import java.io.Serializable;
 @Data
 public class DishPageQueryDTO implements Serializable {
 
+    // 当前页码 比如查询第三页的内容 page=3
     private int page;
+
 
     private int pageSize;
 
