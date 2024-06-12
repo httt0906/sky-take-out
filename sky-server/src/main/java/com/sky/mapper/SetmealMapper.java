@@ -51,4 +51,8 @@ public interface SetmealMapper {
      */
     @Select("select * from setmeal where id = #{setmealId}")
     Setmeal getById(Long setmealId);
+
+
+    @AutoFill(OperationType.UPDATE)
+    void update(Setmeal setmeal);
 }
