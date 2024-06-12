@@ -10,6 +10,14 @@
             #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
 
+    <delete id="deleteBatch" >
+        delete from sky_take_out.setmeal
+        where id in
+        <foreach collection="setmealIds" item="setmealId" separator="," open="(" close=")">
+            #{setmealId}
+        </foreach>
+    </delete>
+
     <select id="pageQuery" resultType="com.sky.vo.SetmealVO">
         select s.*, c.name categoryName  from sky_take_out.setmeal s
         left join sky_take_out.category c
