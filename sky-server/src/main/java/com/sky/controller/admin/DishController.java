@@ -66,7 +66,7 @@ public class DishController {
      */
     @GetMapping("/page")
     @ApiOperation("菜品分页查询")
-    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) { // 不用@RequestBody 因为不用json
+    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) { // 不用@RequestBody 因为GetMapping
         log.info("菜品分页查询:{}",dishPageQueryDTO);
         PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
@@ -98,6 +98,34 @@ public class DishController {
         log.info("修改菜品信息:{}",dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
+    }
+
+
+    /**
+     * 启用、禁用分类
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用分类")
+    public Result<String> startOrStop(@PathVariable("status") Integer status, Long id){
+        dishService.startOrStop(status,id);
+        return Result.success();
+    }
+
+
+    /**
+     * 查询给定分类下的所有菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("查询给定分类下的所有菜品")
+    public Result<List<Dish>> list(Long categoryId){
+        log.info("查询分类:{}下的所有菜品",categoryId);
+        List<Dish> dishes = dishService.list(categoryId);
+        return Result.success(dishes);
     }
 
 

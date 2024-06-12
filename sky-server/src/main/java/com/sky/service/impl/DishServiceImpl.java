@@ -38,6 +38,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 新增菜品和对应的口味
+     *
      * @param dishDTO
      */
     @Transactional // 事务注解 保证方法是原子性质的
@@ -58,7 +59,9 @@ public class DishServiceImpl implements DishService {
         // 向口味表插入多条数据
         if (flavors != null && flavors.size() > 0) {
             // 对每一个口味都赋菜品id值
-            flavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishId);});
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dishId);
+            });
             dishFlavorMapper.insertBatch(flavors);
         }
 
@@ -66,20 +69,22 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品分页查询
+     *
      * @param dishPageQueryDTO
      * @return
      */
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         // 通过这种方式,开发者无需在代码中手动拼接分页相关的 SQL 语句
-        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
+        PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
-        PageResult pageResult = new PageResult(page.getTotal(),page.getResult());
+        PageResult pageResult = new PageResult(page.getTotal(), page.getResult());
         return pageResult;
     }
 
 
     /**
      * 批量删除菜品
+     *
      * @param ids
      * @return
      */
@@ -118,6 +123,11 @@ public class DishServiceImpl implements DishService {
 
     }
 
+    /**
+     * 根据id查找菜品 返回包含口味设置的视图对象
+     * @param id
+     * @return
+     */
     public DishVO getByIdWithFlavor(Long id) {
 
         // 1. 根据菜品id从dish表中查询相应的菜品相关数据
@@ -137,6 +147,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据菜品id修改菜品信息和相关口味
+     *
      * @param dishDTO
      */
     public void updateWithFlavor(DishDTO dishDTO) {
@@ -155,10 +166,48 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (flavors != null && flavors.size() > 0) {
             // 对每一个口味都赋菜品id值
-            flavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishDTO.getId());});
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dishDTO.getId());
+            });
             dishFlavorMapper.insertBatch(flavors);
         }
 
 
     }
+
+    /**
+     * 根据分类id查找所有所属菜品
+     * @param categoryId
+     * @return
+     */
+    public List<Dish> list(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+//                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+
+        // 事实上 仅根据id 我认为的代码逻辑应该是
+        // return dishMapper.list(id)
+        // 后续 Mappper 中的方法也只需从菜品表中仅仅根据id寻找
+
+        // 我认为传递dish对象的好处是 后续可以增加查找的条件
+    }
+
+
+    /**
+     * 启售或停售菜品
+     * @param status
+     * @param id
+     */
+    public void startOrStop(Integer status, Long id) {
+        Dish dish = Dish.builder()
+                .status(status)
+                .id(id)
+                .build();
+        dishMapper.update(dish);
+
+    }
 }
+
+
