@@ -54,3 +54,10 @@ sky:
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
+    mchid: ${sky.dev.wechat.mchid}
+    mchSerialNo: ${sky.dev.wechat.mchSerialNo}
+    privateKeyFilePath: ${sky.dev.wechat.privateKeyFilePath}
+    apiV3Key: ${sky.wechat.apiVersion3Key}
+    weChatPayCertFilePath: ${sky.dev.wechat.weChatPayCertFilePath}
+    notifyUrl: ${sky.dev.wechat.notifyUr1}
+    refundNotifyUrl: ${sky.dev.wechat.refundNotifyUr1}
